@@ -11,9 +11,8 @@ class Pathfinding:
         self.fileName = fileName
         self.canDoDiagonal = canDiagonal
         self.grid = []
-        self.startPosition = None
-        self.goalPosition = None
-        self.currentPosition = None
+        self.start = None
+        self.goal = None
         self.numRows = 0
         self.numColumns = 0
         self.readFile()
@@ -40,9 +39,9 @@ class Pathfinding:
                 except ValueError:
                     indexOfG = None
                 if indexOfS:
-                    startPos = (n, indexOfS)
+                    startPos = (indexOfS, n) #(n, indexOfS)
                 if indexOfG:
-                    goalPos = (n, indexOfG)
+                    goalPos =  (indexOfG, n) #(n, indexOfG)
                 m = len(row)
                 self.grid.append(list(cleaned))
                 n += 1
@@ -61,7 +60,6 @@ class Pathfinding:
         self.numColumns = n
         self.startPosition = startPos
         self.goalPosition = goalPos
-        self.currentPosition = startPos
         self.AStar()
         self.greedy()
         print()
@@ -82,9 +80,27 @@ class Pathfinding:
 
     def AStar(self):
         self.printGrid("A*")
-        frontier = []
+        frontier = [self.start]
         frontier = heapq.heapify(frontier)
         came_from = {} # use a dictionary to generate path by linkage
+        came_from = {self.start}
+        curPos = self.start
+        while frontier != []:
+            curPos = heapq.heappop(frontier)
+            if curPos == self.goal:
+                print("GOAL MOFOs")
+                break
+            r, c = curPos
+            neighbors = [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]
+            for nextPos in neighbors:
+                if nextPos not in came_from and self.grid[nextPos[0]][nextPos[1]] == "_":
+                    if self.canDoDiagonal:
+                        priority = self.euclidenDistance(curPos)
+                    else:
+                        priority = self.manhattenDistance(curPos)
+                    heapq.heappush(frontier, (priority, nextPos))
+                    came_from[nextPos[1]] = curPos
+
         # do the rest later --
     def greedy(self):
         self.printGrid("Greedy")
