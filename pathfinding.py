@@ -81,7 +81,6 @@ class Pathfinding:
     def AStar(self):
         self.printGrid("A*")
         frontier = [self.start]
-        frontier = heapq.heapify(frontier)
         came_from = {} # use a dictionary to generate path by linkage
         came_from = {self.start}
         curPos = self.start
