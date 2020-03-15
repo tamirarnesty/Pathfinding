@@ -17,3 +17,12 @@ X___XX_X_X
 X_X__X_X_X
 X__G_X___X
 XXXXXXXXXX
+
+XXXXXXXXX
+X___XX_X_
+XXXX___X_
+X_X__X__S
+X___XX_X_
+X_X__X_X_
+X__G_X___
+XXXXXXXXX

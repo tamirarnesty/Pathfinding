@@ -186,15 +186,16 @@ class Pathfinding:
                 newCost = costSoFar[current] + self.getCost(neighbourValue)
 
                 # Add to queue if it hasn't already been included or the new cost is better than the old cost
-                if nextNeighbour not in costSoFar or newCost < costSoFar[nextNeighbour]:
-                    # Update cost
-                    costSoFar[nextNeighbour] = newCost
-                    # Determine priority based on heuristic
-                    priority = newCost + self.heuristic(self.goalPosition, nextNeighbour)
-                    # Add the neighbour and its priority to the queue
-                    frontier.put(nextNeighbour, priority)
-                    # Update the path from the neighbour position
-                    cameFrom[nextNeighbour] = current
+                if neighbourValue is not 'X':
+                    if nextNeighbour not in costSoFar or newCost < costSoFar[nextNeighbour]:
+                        # Update cost
+                        costSoFar[nextNeighbour] = newCost
+                        # Determine priority based on heuristic
+                        priority = newCost + self.heuristic(self.goalPosition, nextNeighbour)
+                        # Add the neighbour and its priority to the queue
+                        frontier.put(nextNeighbour, priority)
+                        # Update the path from the neighbour position
+                        cameFrom[nextNeighbour] = current
 
         # rebuilds the path that we took to get from the goal to the start and reverses it so it can be printed in order
         current = self.goalPosition
@@ -273,8 +274,8 @@ class Pathfinding:
     def printGrid(self, algorithm):
         print(algorithm)
 
-        for row in range(self.numRows - 1):
-            for col in range(self.numColumns - 1):
+        for row in range(self.numRows):
+            for col in range(self.numColumns):
                 # Determine the value
                 value = self.grid[row][col]
 
