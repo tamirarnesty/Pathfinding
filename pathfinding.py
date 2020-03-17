@@ -35,7 +35,7 @@ class Pathfinding:
 
         originalOutput = sys.stdout
         outFileName = self.fileName + "_out" + self.extension
-        #sys.stdout = open(outFileName, 'w')
+        sys.stdout = open(outFileName, 'w')
 
         m = 0
         n = 0
@@ -156,7 +156,7 @@ class Pathfinding:
 
         # built in priority queue class that stores the values based on increasing priority (minimum at front)
         frontier = PriorityQueue()
-        frontier.put(self.startPosition, 0)
+        frontier.put((0, self.startPosition))
         # tracks where the current node came from
         cameFrom = {self.startPosition: None}
         # tracks the accumulated cost of the current position
@@ -165,7 +165,7 @@ class Pathfinding:
         # For as long as there are positions in the list
         while not frontier.empty():
             # Get the first (top priority) position
-            current = frontier.get()
+            current = frontier.get()[1]
 
             # Break if the current position is the goal position
             if current == self.goalPosition:
@@ -193,7 +193,7 @@ class Pathfinding:
                         # Determine priority based on heuristic
                         priority = newCost + self.heuristic(self.goalPosition, nextNeighbour)
                         # Add the neighbour and its priority to the queue
-                        frontier.put(nextNeighbour, priority)
+                        frontier.put((priority, nextNeighbour))
                         # Update the path from the neighbour position
                         cameFrom[nextNeighbour] = current
 
@@ -210,18 +210,18 @@ class Pathfinding:
         self.path.reverse()
         self.printGrid("A*")
 
+
     def greedy(self):
         # built in priority queue class that stores the values based on increasing priority (minimum at front)
         frontier = PriorityQueue()
-        frontier.put(self.startPosition, 0)
+        frontier.put((0, self.startPosition))
         # tracks where the current node came from
         cameFrom = {self.startPosition: None}
 
         # For as long as there are positions in the list
         while not frontier.empty():
             # Get the first (top priority) position
-            current = frontier.get()
-
+            current = frontier.get()[1]
             # Break if the current position is the goal position
             if current == self.goalPosition:
                 break
@@ -243,7 +243,7 @@ class Pathfinding:
                     # Determine the priority based on the heuristic
                     priority = self.heuristic(self.goalPosition, nextNeighbour)
                     # Add the neighbour and its priority to the queue
-                    frontier.put(nextNeighbour, priority)
+                    frontier.put((priority, nextNeighbour))
                     # Update the path from the neighbour position
                     cameFrom[nextNeighbour] = current
 
@@ -294,4 +294,4 @@ class Pathfinding:
 if __name__ == '__main__':
     #pathfindingA = Pathfinding("pathfinding_a.txt", False)
     #pathfindingB = Pathfinding("pathfinding_b.txt", True)
-    pathfindindgC = Pathfinding("Test cases/10_size_test_cases.txt", False) # run with true after
+    pathfindindgC = Pathfinding("Test cases/1024_size_test_cases.txt", False) # run with true after
