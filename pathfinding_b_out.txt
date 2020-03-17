@@ -1,42 +1,4 @@
 Greedy
-<<<<<<< HEAD
-XXXXXXXXX
-X___XX_X_
-X_X__X___
-XSXX___X_
-XPX__X___
-XP__XX_X_
-XPX__X_X_
-X_PG_X___
-A*
-XXXXXXXXX
-X___XX_X_
-X_X__X___
-XSXX___X_
-XPX__X___
-X_P_XX_X_
-X_XP_X_X_
-X__G_X___
-
-Greedy
-XXXXXXXXX
-X___XX_X_
-X_X__X___
-XSXX___X_
-XPX__X___
-XP__XX_X_
-XPX__X_X_
-X_PG_X___
-A*
-XXXXXXXXX
-X___XX_X_
-X_X__X___
-XSXX___X_
-XPX__X___
-X_P_XX_X_
-X_XP_X_X_
-X__G_X___
-=======
 XXXXXXXXXX
 X___XX_X_X
 X_X__X___X
@@ -77,4 +39,3 @@ X_P_XX_X_X
 X_XP_X_X_X
 X__G_X___X
 XXXXXXXXXX
->>>>>>> f4b08475576bd68b964f75a6384a9ba231fd09d0
