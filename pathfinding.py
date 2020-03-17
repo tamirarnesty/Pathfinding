@@ -202,13 +202,20 @@ class Pathfinding:
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
+        noSolution = False
         while current != self.startPosition:
-            current = cameFrom[current]
+            try:
+                current = cameFrom[current]
+            except KeyError:
+                print("No solution found for A*")
+                noSolution = True
+                break
             self.path.append(current)
         # self.path.append(self.startPosition)
-        self.path.reverse()
+        if not noSolution:
+            self.path.reverse()
 
-        self.printGrid("A*")
+            self.printGrid("A*")
 
     def greedy(self):
         # built in priority queue class that stores the values based on increasing priority (minimum at front)
@@ -251,13 +258,19 @@ class Pathfinding:
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
+        noSolution = False
         while current != self.startPosition:
-            current = cameFrom[current]
+            try:
+                current = cameFrom[current]
+            except KeyError:
+                print("No solution found for Greedy")
+                noSolution = True
+                break
             self.path.append(current)
         # self.path.append(self.startPosition)
-        self.path.reverse()
-
-        self.printGrid("Greedy")
+        if not noSolution:
+            self.path.reverse()
+            self.printGrid("Greedy")
 
     # a cost function that takes a neighbourValue which is either "X" or "_" meaning it is viable or it is a boundary
     def getCost(self, neighbourValue):
@@ -290,5 +303,6 @@ class Pathfinding:
 
 
 if __name__ == '__main__':
-    pathfindingA = Pathfinding("pathfinding_a.txt", False)
-    pathfindingB = Pathfinding("pathfinding_b.txt", True)
+    #pathfindingA = Pathfinding("pathfinding_a.txt", False)
+    #pathfindingB = Pathfinding("pathfinding_b.txt", True)
+    pathfindindgC = Pathfinding("Test cases/small_test_cases.txt", False)
