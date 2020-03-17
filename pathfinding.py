@@ -35,7 +35,7 @@ class Pathfinding:
 
         originalOutput = sys.stdout
         outFileName = self.fileName + "_out" + self.extension
-        sys.stdout = open(outFileName, 'w')
+        #sys.stdout = open(outFileName, 'w')
 
         m = 0
         n = 0
@@ -198,24 +198,17 @@ class Pathfinding:
                         cameFrom[nextNeighbour] = current
 
         # rebuilds the path that we took to get from the goal to the start and reverses it so it can be printed in order
-        current = self.goalPosition
+        #current = self.goalPosition
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
-        noSolution = False
+
         while current != self.startPosition:
-            try:
-                current = cameFrom[current]
-            except KeyError:
-                print("No solution found for A*")
-                noSolution = True
-                break
+            current = cameFrom[current]
             self.path.append(current)
         # self.path.append(self.startPosition)
-        if not noSolution:
-            self.path.reverse()
-
-            self.printGrid("A*")
+        self.path.reverse()
+        self.printGrid("A*")
 
     def greedy(self):
         # built in priority queue class that stores the values based on increasing priority (minimum at front)
@@ -234,7 +227,8 @@ class Pathfinding:
                 break
 
             # Check all available positions neighbouring current most ideal position
-            for nextNeighbour in self.getNeighbours(current):
+            neighbours = self.getNeighbours(current)
+            for nextNeighbour in neighbours:
                 row = nextNeighbour[1]
                 col = nextNeighbour[0]
 
@@ -254,30 +248,25 @@ class Pathfinding:
                     cameFrom[nextNeighbour] = current
 
         # rebuilds the path that we took to get from the goal to the start and reverses it so it can be printed in order
-        current = self.goalPosition
+        #current = self.goalPosition
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
-        noSolution = False
+
         while current != self.startPosition:
-            try:
-                current = cameFrom[current]
-            except KeyError:
-                print("No solution found for Greedy")
-                noSolution = True
-                break
+            current = cameFrom[current]
             self.path.append(current)
         # self.path.append(self.startPosition)
-        if not noSolution:
-            self.path.reverse()
-            self.printGrid("Greedy")
+
+        self.path.reverse()
+        self.printGrid("Greedy")
 
     # a cost function that takes a neighbourValue which is either "X" or "_" meaning it is viable or it is a boundary
     def getCost(self, neighbourValue):
 
         # if it is a boundary create a high cost so that it will never be chosen as A* chooses minimum
         if neighbourValue is 'X':
-            return 100
+            return 1000
 
         # else if it is a viable movement make the cost one as any right, left, up, down is one movement
         else:
@@ -305,4 +294,4 @@ class Pathfinding:
 if __name__ == '__main__':
     #pathfindingA = Pathfinding("pathfinding_a.txt", False)
     #pathfindingB = Pathfinding("pathfinding_b.txt", True)
-    pathfindindgC = Pathfinding("Test cases/small_test_cases.txt", False)
+    pathfindindgC = Pathfinding("Test cases/10_size_test_cases.txt", False) # run with true after

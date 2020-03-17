@@ -14,7 +14,7 @@ def createGrid(row, col):
         print()
         print("X", end="")
         for k in range(col-2):
-            chanceOfX = randint(1, 7)
+            chanceOfX = randint(1, 9)
             if start == (j, k):
                 print("S", end = "")
             elif goal == (j, k):
@@ -30,6 +30,5 @@ def createGrid(row, col):
     print('\n')
 
 if __name__ == "__main__":
-    sys.stdout = open("max_size_test_cases.txt", 'w')
-    for i in range(100):
-        createGrid(randint(8, 1024), randint(8, 1024))
+    sys.stdout = open("10_size_test_cases.txt", 'w')
+    createGrid(10, 10)
