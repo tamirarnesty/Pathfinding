@@ -1,18 +1,29 @@
 from queue import PriorityQueue
 import math
 import sys
+'''
+CISC 352 - Assignment 2
+pathfinding.py
 
+Group 1
+Cam Cunningham - 20059656
+Emily Gauvreau - 20074874
+Daniel Goldstein - 20119615
+Tamir Arnesty - 20063753
+Ellie Sekine - 20071971
+
+SCROLL TO BOTTOM MAIN FUNCTION TO RUN FILES
+'''
 
 class Pathfinding:
 
     # initializes all global variables that need to be attributes of the class
     def __init__(self, fileName, canDiagonal):
 
-        # strips the filename so that the same function can read in both the text files a&b (diagonal/not)
+        # strips the filename so that the same function can read in both the text files (diagonal/not)
         self.extension = ".txt"
         if fileName.endswith(self.extension):
             fileName = fileName[:-len(self.extension)]
-
 
         self.fileName = fileName  # holds the filename
         self.canDoDiagonal = canDiagonal # informs the function is diagonal movements are allowed
@@ -33,7 +44,6 @@ class Pathfinding:
 
         file = open(self.fileName + self.extension, 'r')
 
-        originalOutput = sys.stdout
         outFileName = self.fileName + "_out" + self.extension
         sys.stdout = open(outFileName, 'w')
 
@@ -44,7 +54,8 @@ class Pathfinding:
         goalPos = None
 
         lines = file.readlines()
-        for i in range(len(lines)):
+        lengthOfLines = len(lines)
+        for i in range(lengthOfLines):
             cleaned = lines[i].strip()
 
             if cleaned != "":
@@ -83,7 +94,7 @@ class Pathfinding:
         # Last grid to run
         self.runAlgorithms(m, n, startPos, goalPos)
 
-        sys.stdout = originalOutput
+        sys.stdout = sys.__stdout__ # reset std output
 
     def runAlgorithms(self, m, n, startPos, goalPos):
         self.numRows = n
@@ -100,9 +111,6 @@ class Pathfinding:
         self.path = []
 
         self.AStar()
-
-        # print()
-
 
     # returns the calculation performed by the heuristic calculation depending on whether on not
     # diagonal movement is allowed within the grid
@@ -123,7 +131,7 @@ class Pathfinding:
     def manhattan(self, a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-    # finds the neighbours of a given position and returns then as a list of tuples
+    # finds the neighbours of a given position and returns them as a list of tuples
     def getNeighbours(self, position):
 
         possibleMoves = []
@@ -146,9 +154,10 @@ class Pathfinding:
                 continue
             if newY < 0 or newY >= self.numRows:
                 continue
+            if self.grid[newX][newY] == "X":
+                continue
             else:
                 possibleMoves.append((newX, newY))
-
         return possibleMoves
 
     # performs the A* Algorithm using an accumulating cost and a priority queue
@@ -165,14 +174,15 @@ class Pathfinding:
         # For as long as there are positions in the list
         while not frontier.empty():
             # Get the first (top priority) position
-            current = frontier.get()[1]
+            current = frontier.get()[1] # index 1 is the position, index 0 is the cost
 
             # Break if the current position is the goal position
             if current == self.goalPosition:
                 break
 
             # Check all available positions neighbouring current most ideal position
-            for nextNeighbour in self.getNeighbours(current):
+            currentNeighbours = self.getNeighbours(current)
+            for nextNeighbour in currentNeighbours:
                 row = nextNeighbour[1]
                 col = nextNeighbour[0]
 
@@ -186,7 +196,7 @@ class Pathfinding:
                 newCost = costSoFar[current] + self.getCost(neighbourValue)
 
                 # Add to queue if it hasn't already been included or the new cost is better than the old cost
-                if neighbourValue is not 'X':
+                if neighbourValue != 'X':
                     if nextNeighbour not in costSoFar or newCost < costSoFar[nextNeighbour]:
                         # Update cost
                         costSoFar[nextNeighbour] = newCost
@@ -198,15 +208,12 @@ class Pathfinding:
                         cameFrom[nextNeighbour] = current
 
         # rebuilds the path that we took to get from the goal to the start and reverses it so it can be printed in order
-        #current = self.goalPosition
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
-
         while current != self.startPosition:
             current = cameFrom[current]
             self.path.append(current)
-        # self.path.append(self.startPosition)
         self.path.reverse()
         self.printGrid("A*")
 
@@ -221,7 +228,7 @@ class Pathfinding:
         # For as long as there are positions in the list
         while not frontier.empty():
             # Get the first (top priority) position
-            current = frontier.get()[1]
+            current = frontier.get()[1] # index one is position, index 0 is the cost
             # Break if the current position is the goal position
             if current == self.goalPosition:
                 break
@@ -239,7 +246,7 @@ class Pathfinding:
                     print(row, col)
 
                 # Add to the queue if the neighbour isn't a boundary and isn't already a visited value
-                if neighbourValue is not 'X' and nextNeighbour not in cameFrom:
+                if neighbourValue != 'X' and nextNeighbour not in cameFrom:
                     # Determine the priority based on the heuristic
                     priority = self.heuristic(self.goalPosition, nextNeighbour)
                     # Add the neighbour and its priority to the queue
@@ -248,26 +255,21 @@ class Pathfinding:
                     cameFrom[nextNeighbour] = current
 
         # rebuilds the path that we took to get from the goal to the start and reverses it so it can be printed in order
-        #current = self.goalPosition
         self.path = [current]
 
         # Continue following the path backwards until the current position is the goal position
-
         while current != self.startPosition:
             current = cameFrom[current]
             self.path.append(current)
-        # self.path.append(self.startPosition)
 
         self.path.reverse()
         self.printGrid("Greedy")
 
     # a cost function that takes a neighbourValue which is either "X" or "_" meaning it is viable or it is a boundary
     def getCost(self, neighbourValue):
-
         # if it is a boundary create a high cost so that it will never be chosen as A* chooses minimum
-        if neighbourValue is 'X':
-            return 1000
-
+        if neighbourValue == 'X':
+            return 2000
         # else if it is a viable movement make the cost one as any right, left, up, down is one movement
         else:
             return 1
@@ -284,7 +286,7 @@ class Pathfinding:
                 # If the position is in the path
                 if (col, row) in self.path:
                     # Change the value to 'P' for Path if not already start or goal
-                    if value is not 'S' and value is not 'G':
+                    if value != 'S' and value != 'G':
                         value = 'P'
 
                 print(value, end="")
@@ -292,6 +294,9 @@ class Pathfinding:
 
 
 if __name__ == '__main__':
-    #pathfindingA = Pathfinding("pathfinding_a.txt", False)
-    #pathfindingB = Pathfinding("pathfinding_b.txt", True)
-    pathfindindgC = Pathfinding("Test cases/1024_size_test_cases.txt", False) # run with true after
+    # Run several tests
+    # test 1: run with broken maze - no solution
+    # test 2: run on 5 small mazes and compare greedy and A* path
+    # test 3: run on 2 medium cases (size 30 or so) to make sure paths are different or the same (look for difference)
+    # test 5: test for speed on huge mazes (10, 1024 ones and time it - limit is 15 minutes)
+    pathfindindgC = Pathfinding("Test cases/10_size_test_cases.txt", True) # run with true after
