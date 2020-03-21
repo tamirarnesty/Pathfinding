@@ -154,8 +154,6 @@ class Pathfinding:
                 continue
             if newY < 0 or newY >= self.numRows:
                 continue
-            if self.grid[newX][newY] == "X":
-                continue
             else:
                 possibleMoves.append((newX, newY))
         return possibleMoves
@@ -294,9 +292,9 @@ class Pathfinding:
 
 
 if __name__ == '__main__':
-    # Run several tests
-    # test 1: run with broken maze - no solution
-    # test 2: run on 5 small mazes and compare greedy and A* path
-    # test 3: run on 2 medium cases (size 30 or so) to make sure paths are different or the same (look for difference)
-    # test 5: test for speed on huge mazes (10, 1024 ones and time it - limit is 15 minutes)
-    pathfindindgC = Pathfinding("Test cases/10_size_test_cases.txt", True) # run with true after
+    '''
+    Example of how to run code
+    Pathfinding(fileName, canDiagonal) // canDiagonal is a boolean value
+    Ex: Pathfinding(file.txt, True) - does do diagonal
+        Pathfinding(file.txt, False) - does not do diagonal
+    '''

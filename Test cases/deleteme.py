@@ -30,5 +30,6 @@ def createGrid(row, col):
     print('\n')
 
 if __name__ == "__main__":
-    sys.stdout = open("10_size_test_cases.txt", 'w')
-    createGrid(10, 10)
+    sys.stdout = open("insane.txt", 'w')
+    for i in range(10):
+        createGrid(1024, 1024)
